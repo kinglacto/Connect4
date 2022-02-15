@@ -127,25 +127,20 @@ class Connect4():
                                         break
 
                 if self.to_move == 'computer':
-                    best_move = engine.get_best_move()
                     try:
-                        if best_move == None:
-                            i, j = engine.get_all_valid_moves[1]
-                        else:
-                            i, j = best_move
+                        best_move = engine.get_best_move()
+                        i, j = best_move
+                    except:
+                        i, j = engine.get_all_valid_moves[0]
+                    engine.make_move((i, j))
+                    self.drop_piece(self.computer_color, self.slots_centers_list[i][j], (i, j))
+                    self.to_move = 'player'
 
-                        engine.make_move((i, j))   
-                        self.drop_piece(self.computer_color, self.slots_centers_list[i][j], (i, j))
-                        self.to_move = 'player'
+                    if self.should_end_game():
+                        self.clean_up()
+                        return True
 
-                        if self.should_end_game():
-                            self.clean_up()
-                            return True
-
-                        pygame.display.update()
-
-                    except TypeError:
-                        self.to_move = "computer"
+                    pygame.display.update()
 
                 pygame.time.wait(30)
 
